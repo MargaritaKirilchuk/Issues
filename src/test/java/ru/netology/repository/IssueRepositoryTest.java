@@ -148,7 +148,7 @@ class IssueRepositoryTest {
 
         @Test
         void findOpenedIfNotExist() {
-            repository.save(firstIssue);
+            repository.save(secondIssue);
             List <Issue> expected = new ArrayList<>();
             List <Issue> actual = repository.findOpen();
             assertEquals(expected, actual);
