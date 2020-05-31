@@ -23,7 +23,6 @@ class IssueRepositoryTest {
             List <Issue> actual = repository.findOpen();
             assertEquals(expected, actual);
         }
-
         @Test
         void findClosedIfEmpty() {
             List <Issue> expected = new ArrayList<>();
