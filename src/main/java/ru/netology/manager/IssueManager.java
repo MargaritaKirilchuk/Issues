@@ -17,27 +17,61 @@ public class IssueManager {
         repository.save(item);
     }
 
-    public Collection<Issue> getAll() {
+    public List<Issue> getAll() {
         return repository.findAll();
     }
 
-    public boolean addAll(Collection<Issue> items) {
+    public boolean addAll(List<Issue> items) {
         return repository.addAll(items);
     }
 
-    public Collection<Issue> sortByNewest() {
+    public List<Issue> sortByNewest() {
         Comparator byNewest = Comparator.naturalOrder();
-        Collection<Issue> issues = new ArrayList<>();
+        List<Issue> issues = new ArrayList<>();
         issues.addAll(repository.findAll());
         ((ArrayList<Issue>) issues).sort(byNewest);
         return issues;
     }
 
-    public Collection<Issue> sortByOldest() {
+    public List<Issue> sortByOldest() {
         Comparator byNewest = Comparator.reverseOrder();
-        Collection<Issue> issues = new ArrayList<>();
+        List<Issue> issues = new ArrayList<>();
         issues.addAll(repository.findAll());
         ((ArrayList<Issue>) issues).sort(byNewest);
+        return issues;
+    }
+    public List<Issue> findByAuthor(String author) {
+        Predicate<String> byAuthor = t -> t.equalsIgnoreCase(author);
+        List<Issue> issues = new ArrayList<>();
+        for (Issue item : repository.findAll())
+            if (byAuthor.test(item.getAuthor())) {
+                issues.add(item);
+            }
+        return issues;
+    }
+
+    public List<Issue> findByLabel(Set <String> issueLabel) {
+        Predicate<String> byLabel = t -> t.equalsIgnoreCase(String.valueOf(issueLabel));
+        List<Issue> issues = new ArrayList<>();
+        for (Issue item : repository.findAll()) {
+            for (String itemLabel : item.getIssueLabels())
+                if (byLabel.test(itemLabel)) {
+                    issues.add(item);
+                }
+        }
+            return issues;
+
+    }
+
+    public List<Issue> findByAssignee(Set <String> issueAssignee) {
+        Predicate<String> byAssignee = t -> t.equalsIgnoreCase(String.valueOf(issueAssignee));
+        List<Issue> issues = new ArrayList<>();
+        for (Issue item : repository.findAll()){
+            for (String itemAssignee : item.getIssueAssignee())
+                if (byAssignee.test(itemAssignee)){
+                issues.add(item);
+            }
+        }
         return issues;
     }
 }
